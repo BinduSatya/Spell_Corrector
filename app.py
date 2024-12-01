@@ -44,7 +44,10 @@ def autocorrect(word):
     else:
         similarities = []
         for w in word_freq_dict.keys():
-            similarities.append(1 - (textdistance.Jaccard()).distance(w, word))
+            lev_distance = textdistance.levenshtein(w, word)
+            lev_similarity = 1 - (lev_distance / max(len(w), len(word)))
+            # similarities.append(1 - (textdistance.Jaccard()).distance(w, word))
+            similarities.append(lev_similarity)
 
         df = pd.DataFrame.from_dict(prob, orient='index').reset_index()
         df.rename(columns={'index': 'Word', 0: 'Probability'}, inplace=True)
